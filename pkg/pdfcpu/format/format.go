@@ -53,7 +53,7 @@ func Text(text, timeStampFormat string, pageNr, pageCount int) (string, bool) {
 			if hasPercent {
 				bb = append(bb, '%')
 			}
-			hasPercent = true
+			hasPercent = !hasPercent
 			continue
 		}
 		if hasPercent {
@@ -78,12 +78,16 @@ func Text(text, timeStampFormat string, pageNr, pageCount int) (string, bool) {
 				unique = true
 				continue
 			}
+			bb = append(bb, '%')
 		}
 		bb = append(bb, text[i])
 	}
 	if pageNrTag {
 		pageOffset, _ := strconv.Atoi(sb.String())
 		bb = append(bb, strconv.Itoa(pageOffset+pageNr)...)
+	}
+	if hasPercent {
+		bb = append(bb, '%')
 	}
 	return string(bb), unique
 }
